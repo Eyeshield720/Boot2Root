@@ -123,8 +123,87 @@ Remote system type is UNIX.
 Using binary mode to transfer files.
 ```
 
-* We have 2 file into the ftp server
+* We have 2 file into the ftp server, let's donwload them
 ```bash
 -rwxr-x---    1 1001     1001           96 Oct 15  2015 README
 -rwxr-x---    1 1001     1001       808960 Oct 08  2015 fun
 ```
+* README and fun can be read now
+    - fun seems a *tar* file containing many pcap
+```bash
+└─$ cat README 
+Complete this little challenge and use the result as password for user 'laurie' to login in ssh
+└─$ file fun
+fun: POSIX tar archive (GNU)
+└─$ ls ft_fun 
+00M73.pcap  55WLW.pcap  ATLJ4.pcap  GX39Y.pcap  NJBCM.pcap  T7R09.pcap
+...
+```
+* pcap file main has corrupt, cause it split in some parts
+    - Note: with *cat*, we can read and concate this files
+```bash
+└─$ cat * > pcap.out
+...
+int main() {
+	printf("M");
+	printf("Y");
+	printf(" ");
+	printf("P");
+	printf("A");
+	printf("S");
+	printf("S");
+	printf("W");
+	printf("O");
+	printf("R");
+	printf("D");
+	printf(" ");
+	printf("I");
+	printf("S");
+	printf(":");
+	printf(" ");
+	printf("%c",getme1());
+	printf("%c",getme2());
+	printf("%c",getme3());
+	printf("%c",getme4());
+	printf("%c",getme5());
+	printf("%c",getme6());
+	printf("%c",getme7());
+	printf("%c",getme8());
+	printf("%c",getme9());
+	printf("%c",getme10());
+	printf("%c",getme11());
+	printf("%c",getme12());
+	printf("\n");
+	printf("Now SHA-256 it and submit");
+...
+```
+* After investigate the file, we found all getmexx, we got`laurie`'s password
+```cs
+Iheartpwnage -> 330b845f32185747e4f8ca15d40ca59796035c89ea809fb5d30f4da83ecf45a4
+```
+* Now we can access to ssh port
+    - And same previous, let find the password of *thor*
+```bash
+laurie@192.168.56.3's password: 
+laurie@BornToSecHackMe:~$ ls -l
+total 27
+-rwxr-x--- 1 laurie laurie 26943 Oct  8  2015 bomb
+-rwxr-x--- 1 laurie laurie   158 Oct  8  2015 README
+laurie@BornToSecHackMe:~$ cat README 
+Diffuse this bomb!
+When you have all the password use it as "thor" user with ssh.
+
+HINT:
+P
+ 2
+ b
+
+o
+4
+
+NO SPACE IN THE PASSWORD (password is case sensitive).
+laurie@BornToSecHackMe:~$ ./bomb 
+Welcome this is my little bomb !!!! You have 6 stages with
+only one life good luck !! Have a nice day!
+```
+
